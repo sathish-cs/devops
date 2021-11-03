@@ -6,19 +6,19 @@ services:
         depends_on:
             - flask
         volumes:
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf # replacing custom nginx file in default nginx by mounting
         networks:
             - my-network
         ports:
-            - 80:80
+            - 80:80 # Exposing container port to host port on 8080
     flask:
-        build:
+        build: # Used to build images from dockerfile
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile 
         image: flask:0.0.1
         container_name: flask
         volumes:
-            - ./:/code/
+            - ./:/code/ # Mounting sample code into container image
         environment:
             - FLASK_APP=/code/main.py
         command: flask run --host=0.0.0.0
@@ -27,8 +27,8 @@ services:
                 aliases:
                     - flask-app
         ports:
-            - 8080:5000
+            - 8080:5000 # Exposing container port to host port on 8080
 
-networks:
-    my-network:
+networks: # Services are deploying in custom network with bridge driver by default
+    my-network: 
 
